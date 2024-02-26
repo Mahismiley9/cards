@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>memory game</title>
+    <link rel="stylesheet" type="text/css" href="./memeory game.css">
+    
+  
+</head>
+<body>
+   <style>
+     *{
+    margin: 0;
+    padding: 0;
+    font-family: monospace;
+    box-sizing: border-box;
+}
+body{
+    display: flex;
+    min-height: 100vh;
+    background: linear-gradient(325deg,#04021c 0%,#c003bd 30%,#38cbec 70%,#effdfc 100%); 
+    align-items: center;
+    justify-content: center;
+
+}
+
+
+.container{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  background: #7b8c6c;
+  padding: 40px 60px;
+}
+p{
+    font-size: 40px;
+}
+h2{
+    text-align: center;
+    color: blue;
+    font-weight: 700;
+    font-size: 3em;
+    font-style: italic;
+    letter-spacing: 0.1em;
+}
+.reset{
+    padding: 15px 20px;
+    color: rgb(37, 113, 55);
+    background: #b83568;
+    border: none;
+    font-size: 1.5em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: 600;
+}
+.reset:focus{
+    color: aliceblue;
+    background: #267c65;
+}
+.game{
+    width: 430px;
+    height: 430px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    transform-style: preserve-3d;
+    perspective: 500px;
+}
+.item{
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 3em;
+    background: #effdfc;
+    transition: 0.25s;
+}
+.item::after{
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: #075d68;
+    transition: 0.25s;
+    transform: rotateY(0deg);
+backface-visibility: hidden;
+}
+.item.boxOpen{
+    transform: rotateY(0deg);
+    
+}
+.boxOpen:after,
+.boxMatch:after
+{
+    transform: rotateY(180deg);
+}
+   </style>
+   <div class="container">
+   <h2>MATCHING CARDS</h1>
+  <audio src="./blackpink.mp3" id="audio" controls style="display: none;"></audio>
+    <div class="game"></div>
+  <button class="reset" id="reset" onclick="window.location.reload();">Reset Game</button>
+        </div>
+  <script>
+   
+
+    const emojies = ["😡","😡","😶‍🌫️","😶‍🌫️","🥳","🥳","👀","👀","🫀","🫀","🪹","🪹","🌶️","🌶️","🌮","🌮"];
+    var shuf_emojies = emojies.sort(() => (Math.random(5) > .5) ? 2 : -1);
+    for(var i=0;i<emojies.length; i++){
+      let box = document.createElement('div')
+      box.className='item';
+      box.innerHTML= shuf_emojies[i]
+
+      box.onclick= function(){
+        this.classList.add('boxOpen')
+        setTimeout(function(){
+          if(document.querySelectorAll('.boxOpen').length > 1){
+            if(document.querySelectorAll('.boxOpen')[0].innerHTML == document.querySelectorAll('.boxOpen')[1].innerHTML){
+              document.querySelectorAll('.boxOpen')[0].classList.add('boxMatch')
+              document.querySelectorAll('.boxOpen')[1].classList.add('boxMatch')
+
+              document.querySelectorAll('.boxOpen')[1].classList.remove('boxOpen')
+              document.querySelectorAll('.boxOpen')[0].classList.remove('boxOpen')
+
+              if(document.querySelectorAll('.boxMatch').length==emojies.length){
+                alert("win")
+              
+              }
+            } else{
+              document.querySelectorAll('.boxOpen')[1].classList.remove('boxOpen')
+              document.querySelectorAll('.boxOpen')[0].classList.remove('boxOpen')
+            }
+          }
+        },500)
+      }
+      document.querySelector('.game').appendChild(box)
+
+    }
+  </script>
+
+</body>
+</html>
